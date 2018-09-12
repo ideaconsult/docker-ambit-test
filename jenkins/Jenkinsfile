@@ -1,7 +1,10 @@
+def img_db = ''
+def img_ap = ''
+
 node {
     stage('Build') {
-        def img_db = docker.build('ideaconsult/ambit-mariadb-test:release', 'jenkins/ambit-mariadb')
-        def img_ap = docker.build('ideaconsult/ambit-tomcat-test:release', 'jenkins/ambit-tomcat')
+        img_db = docker.build('ideaconsult/ambit-mariadb-test:release', 'jenkins/ambit-mariadb')
+        img_ap = docker.build('ideaconsult/ambit-tomcat-test:release', 'jenkins/ambit-tomcat')
     }
     stage('Publish') {
         withDockerRegistry([credentialsId: 'dockerhub-idea', url: '']) {
