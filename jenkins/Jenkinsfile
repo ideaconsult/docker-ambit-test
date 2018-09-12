@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker build -f jenkins/ambit-mysql/Dockerfile -t ideaconsult/ambit-mysql-test:release .'
+                sh 'docker build -f jenkins/ambit-mariadb/Dockerfile -t ideaconsult/ambit-mariadb-test:release .'
                 sh 'docker build -f jenkins/ambit-tomcat/Dockerfile -t ideaconsult/ambit-tomcat-test:release .'
             }
         }
@@ -14,7 +14,7 @@ pipeline {
             }
             steps {
                 withDockerRegistry([credentialsId: 'dockerhub-idea', url: '']) {
-                    sh 'docker push ideaconsult/ambit-mysql-test:release'
+                    sh 'docker push ideaconsult/ambit-mariadb-test:release'
                     sh 'docker push ideaconsult/ambit-tomcat-test:release'
                 }
             }
