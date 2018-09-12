@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker build -f jenkins/ambit-mariadb/Dockerfile -t ideaconsult/ambit-mariadb-test:release .'
-                sh 'docker build -f jenkins/ambit-tomcat/Dockerfile -t ideaconsult/ambit-tomcat-test:release .'
+                sh 'docker build -t ideaconsult/ambit-mariadb-test:release jenkins/ambit-mariadb'
+                sh 'docker build -t ideaconsult/ambit-tomcat-test:release jenkins/ambit-tomcat'
             }
         }
         stage('Publish') {
