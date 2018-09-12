@@ -1,23 +1,12 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                sh 'docker build -t ideaconsult/ambit-mariadb-test:release jenkins/ambit-mariadb'
-                sh 'docker build -t ideaconsult/ambit-tomcat-test:release jenkins/ambit-tomcat'
-            }
-        }
-        stage('Publish') {
-            when {
-                branch 'master'
-            }
-            steps {
-                withDockerRegistry([credentialsId: 'dockerhub-idea', url: '']) {
-                    sh 'docker push ideaconsult/ambit-mariadb-test:release'
-                    sh 'docker push ideaconsult/ambit-tomcat-test:release'
-                }
-            }
+node {
+    stage('Build') {
+        def img_db = docker.build('ideaconsult/ambit-mariadb-test:release', 'jenkins/ambit-mariadb')
+        def img_ap = docker.build('ideaconsult/ambit-tomcat-test:release', 'jenkins/ambit-tomcat')
+    }
+    stage('Publish') {
+        withDockerRegistry([credentialsId: 'dockerhub-idea', url: '']) {
+            img_db.push()
+            img_ap.push()
         }
     }
 }
